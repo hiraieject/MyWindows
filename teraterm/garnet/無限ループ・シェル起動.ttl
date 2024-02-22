@@ -1,0 +1,56 @@
+:loop
+
+flushrecv
+
+sendln ''
+wait 'MN2WS0270>' '[2nd] r(ph1) CANCER V1'
+if result == 1 goto do_uboot
+;BOOT‚ÌUBOOT‹N“®ˆ—
+
+;;send 32 32 32 32 32 32 32 32 
+;;send 32 32 32 32 32 32 32 32 
+;;send 32 32 32 32 32 32 32 32 
+;;
+:do_uboot
+;;
+;;flushrecv
+;;sendln ''
+;;wait 'MN2WS0270>'
+;;
+;;include 'UBoot_V1map_CancerPlus_FP_V2_2Gbit.ttl'
+;;
+;;pause 2
+;;flushrecv
+;;
+;;sendln ''
+;;pause 1
+;;wait 'MN2WS0270>'
+;;
+;;sendln 'run ll'
+;;pause 1
+;;wait 'MN2WS0270>'
+;;
+;;sendln ''
+;;pause 1
+;;wait 'MN2WS0270>'
+;;
+;;sendln ''
+;;pause 1
+;;wait 'MN2WS0270>'
+;;
+;;pause 1
+;;sendln 'boot'
+;;pause 1
+wait 'Sys_NoticeInitDataEnd: init data OK!'
+
+pause 1
+sendln 'ut_sys sh'
+
+wait 'arg[0] = "sh"'
+;;;;pause 1
+;;;;sendln 'mount /usr'
+
+goto loop
+
+;;;; ƒoƒ“ƒNØ‚è‘Ö‚¦
+;;;; MN2WS0270> run erflg

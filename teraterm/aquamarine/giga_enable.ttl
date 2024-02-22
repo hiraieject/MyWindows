@@ -1,0 +1,16 @@
+
+
+sendln ""
+wait 'U-Boot>'
+sendln "mm 5f801810"
+wait '?'
+sendln "0x7fff8000"
+wait '?'
+sendln "."
+wait 'U-Boot>'
+sendln "run lsm"
+wait 'U-Boot>'
+;;sendln "run all"
+;;wait 'U-Boot>'
+sendln "boot"
+

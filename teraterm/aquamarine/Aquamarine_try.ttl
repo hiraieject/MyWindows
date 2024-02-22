@@ -1,0 +1,19 @@
+;;sendln "setenv ethaddr '00:0B:97:7C:73:C9'"
+sendln "setenv ethaddr 'BC:C3:42:A4:DF:7B'"
+
+sendln "setenv ipaddr '192.168.0.100'"
+sendln "setenv netmask '255.255.255.0'"
+sendln "setenv serverip '192.168.0.88'"
+sendln "setenv gatewayip '192.168.0.1'"
+
+
+;;sendln "setenv mem 'mem=165M@0x8DB00000 mem=478M@0xD6D00000'"
+;;	«Œã”¼ƒuƒƒbƒN‚Ì––”ö 1M Byte ‚ğŠ„‚è“–‚Ä‚é
+;;sendln "setenv mem 'mem=165M@0x8DB00000 mem=477M@0xD6D00000'"
+;;
+;;	start=0xD6D00000 + 477M(0x1DD00000) = 0xF4A00000
+
+;; mem=mem=165M@0x8DB00000 mem=478M@0xD6D00000
+;; 
+;; run reload
+;; 

@@ -1,0 +1,7 @@
+sendln "setenv bootargs 'root=/dev/mtdblock9 rootfstype=squashfs rw mem=144M@0x87000000 mem=217M@0xC2700000 console=ttyS2,115200 nfs=n telnet=y user_debug=0x1f init=/bin/sh -l target=refapp kgdboc=ttyS2,115200 kgdbwait'"
+wait 'MN2WS0270>'
+sendln "saveenv"
+wait 'MN2WS0270>'
+
+
+

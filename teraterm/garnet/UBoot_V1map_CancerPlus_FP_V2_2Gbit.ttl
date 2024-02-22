@@ -1,0 +1,86 @@
+
+;0x000000000000-0x000000100000 : "nand_2ndboot"
+;0x000000100000-0x000000200000 : "stm_nand_2ndboot"
+;0x000000200000-0x000000220000 : "nand_swupdate_flag1"
+;0x000000220000-0x000000240000 : "nand_swupdate_flag2"
+;0x000000240000-0x000000260000 : "nand_stm_main"
+;0x000000260000-0x0000002a0000 : "nand_3rdboot"
+;0x0000002a0000-0x0000002e0000 : "nand_uboot"
+;0x0000002e0000-0x000000ae0000 : "nand_ucode"
+;0x000000ae0000-0x000000ee0000 : "nand_kernel"
+;0x000000ee0000-0x0000016e0000 : "nand_rootfs"
+;0x0000016e0000-0x000006ee0000 : "nand_fs_usr"
+;0x000006ee0000-0x00000db80000 : "nand_bank1"
+;0x00000db80000-0x00000dba0000 : "nand_uboot_env"
+;0x00000dba0000-0x00000eba0000 : "nand_fs_nv"
+;0x00000eba0000-0x00000eea0000 : "nand_3rdsplash"
+;0x00000f2c0000-0x00000f3c0000 : "nand_eeprom"
+;0x00000f3c0000-0x000010000000 : "nand_sys_bbm"
+;0x00000eea0000-0x00000f2c0000 : "nand_picture"
+
+;;;sendln 'setenv target "sf2"'
+;;;sendln 'setenv target "sf2hr4620_wlan"'
+sendln 'setenv target "sf2hr4620_panaapp"'
+
+wait 'MN2WS0270>'
+sendln 'setenv ethaddr "20:C6:EB:A9:70:80"'
+wait 'MN2WS0270>'
+sendln 'setenv ipaddr "192.168.0.12"'
+wait 'MN2WS0270>'
+sendln 'setenv netmask "255.255.255.0"'
+wait 'MN2WS0270>'
+sendln 'setenv serverip "192.168.0.88"'
+wait 'MN2WS0270>'
+sendln 'setenv gatewayip "192.168.0.1"'
+wait 'MN2WS0270>'
+;;hirai sendln 'setenv bootargs "root=/dev/mtdblock9 rootfstype=squashfs rw mem=144M@0x87000000 mem=217M@0xC2700000 console=ttyS2,115200 nfs=n telnet=y user_debug=0x1f init=/bin/sh -l target=refapp"'
+;;hirai wait 'MN2WS0270>'
+
+sendln 'setenv lb "tftp 8a000000 $target/boot.rom && nand erase 0 00100000 && nand write 8a000000 0 00100000"'
+wait 'MN2WS0270>'
+sendln 'setenv lsm0 "tftp 8a000000 $target/stm_nloader.bin && nand erase 00100000 00100000 && nand write 8a000000 00100000 00100000"'
+wait 'MN2WS0270>'
+sendln 'setenv lsm1 "tftp 8a000000 $target/stm_main.bin && nand erase 00240000 00020000 && nand write 8a000000 00240000 00020000"'
+wait 'MN2WS0270>'
+sendln 'setenv lm "tftp 8a000000 $target/main.rom && nand erase 00260000 00040000 && nand write 8a000000 00260000 00040000"'
+wait 'MN2WS0270>'
+sendln 'setenv lu "tftp 8a000000 $target/u-boot.bin && nand erase 002a0000 00040000 && nand write 8a000000 002a0000 00040000"'
+wait 'MN2WS0270>'
+sendln 'setenv li "tftp 8a000000 $target/ucode.rom && nand erase 002e0000 00800000 && nand write 8a000000 002e0000 00800000"'
+wait 'MN2WS0270>'
+sendln 'setenv lk "tftp 8a000000 $target/uImage && nand erase 00ae0000 00400000 && nand write 8a000000 00ae0000 00400000"'
+wait 'MN2WS0270>'
+sendln 'setenv lr "tftp 8a000000 $target/rootfs.squashfs && nand erase 00ee0000 00800000 && nand write 8a000000 00ee0000 00800000"'
+wait 'MN2WS0270>'
+
+;for user.squash
+sendln 'setenv lus0 "tftp 8a000000 $target/user.squashfs.0 && nand erase 016e0000 02000000 && nand write 8a000000 016e0000 02000000"'
+wait 'MN2WS0270>'
+sendln 'setenv lus1 "tftp 8a000000 $target/user.squashfs.1 && nand erase 036e0000 02000000 && nand write 8a000000 036e0000 02000000"'
+wait 'MN2WS0270>'
+sendln 'setenv lus2 "tftp 8a000000 $target/user.squashfs.2 && nand erase 056e0000 02000000 && nand write 8a000000 056e0000 02000000"'
+wait 'MN2WS0270>'
+
+;Erase SW Update Flag
+sendln 'setenv erflg "nand erase 00200000 00040000"'
+wait 'MN2WS0270>'
+
+;Erase U-Boot Env Area
+sendln 'setenv eruenv "nand erase 0x0db80000 0x00020000"'
+wait 'MN2WS0270>'
+
+;Erase NV Area
+sendln 'setenv ernv "nand erase 0x0dba0000 0x01000000"'
+wait 'MN2WS0270>'
+sendln 'setenv lv "tftp 8a000000 sf2/nv.jffs2 && nand erase 0x0df40000 0x00800000 && nand write 8a000000 0x0df40000 0x00800000"'
+wait 'MN2WS0270>'
+
+
+;Update All images to NAND and clear SW Update Flag(for bank0 boot)
+sendln 'setenv ll "run lr && run lus0 && run lus1 && run lus2"'
+wait 'MN2WS0270>'
+sendln 'setenv all "run lb && run lsm0 && run lsm1 && run lm && run lu && run li && run lk && run lr && run lus0 && run lus1 && run lus2"'
+wait 'MN2WS0270>'
+
+
+
