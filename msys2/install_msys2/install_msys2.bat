@@ -33,7 +33,9 @@ IF NOT EXIST "%INSTALLFOLDER%" (
 )
 
 rem Download setup file
-curl -k -L %URL% -o %SETUPFILE%
+IF NOT EXIST "%SETUPFILE%" (
+   curl -k -L %URL% -o %SETUPFILE%
+)
 
 rem Execute setup
 %SETUPFILE% in --confirm-command --accept-messages --root %INSTALLFOLDER%
